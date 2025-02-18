@@ -1,0 +1,83 @@
+#
+# /etc/freeradius/3.0/sites-enabled/default
+#
+server default {
+    listen {
+        type = auth
+        ipaddr = *
+        port = 1812
+    }
+
+    listen {
+        type = acct
+        ipaddr = *
+        port = 1813
+    }
+
+    authorize {
+        preprocess
+        chap
+        mschap
+        digest
+        suffix
+        eap {
+            ok = return
+        }
+        files
+        expiration
+        logintime
+        ldap
+
+        # Se o Auth-Type não estiver definido, define como LDAP
+        if (!&control:Auth-Type) {
+            update control {
+                Auth-Type := LDAP
+            }
+        }
+    }
+
+    authenticate {
+        Auth-Type PAP {
+            pap
+        }
+        Auth-Type CHAP {
+            chap
+        }
+        Auth-Type MS-CHAP {
+            mschap
+        }
+        Auth-Type EAP {
+            eap
+        }
+        # Processa autenticação via LDAP
+        Auth-Type LDAP {
+            ldap
+        }
+    }
+
+    preacct {
+        preprocess
+        acct_unique
+        suffix
+        files
+    }
+
+    accounting {
+        detail
+        unix
+        radutmp
+        exec
+    }
+
+    session {
+        radutmp
+    }
+
+    post-auth {
+        exec
+        Post-Auth-Type REJECT {
+            attr_filter.access_reject
+        }
+    }
+}
+

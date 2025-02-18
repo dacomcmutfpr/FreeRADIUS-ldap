@@ -1,0 +1,30 @@
+# This Docker Compose file sets up a FreeRADIUS service with LDAP integration.
+# Version 3.8 of the Docker Compose file format is used.
+
+services:
+  freeradius:
+    # The FreeRADIUS service is built from the current directory.
+    build: .
+    # The container is named 'freeradius-ldap'.
+    container_name: freeradius-ldap
+    # The container will always restart on failure.
+    restart: always
+    environment:
+      # Environment variables for LDAP configuration.
+      - LDAP_SERVER=ldaps://ldapslave2-cm.utfpr.edu.br  # The LDAP server URL.
+      - LDAP_PORT=636  # The port to connect to the LDAP server.
+      - LDAP_IDENTITY=${LDAP_IDENTITY:-}  # The LDAP identity (can be set via environment variable).
+      - LDAP_PASSWORD=${LDAP_PASSWORD:-}  # The LDAP password (can be set via environment variable).
+      - LDAP_BASEDN=dc=utfpr,dc=edu,dc=br  # The base DN for LDAP searches.
+    ports:
+      # Ports exposed by the FreeRADIUS service.
+      - "1812:1812/udp"  # RADIUS authentication port.
+      - "1813:1813/udp"  # RADIUS accounting port.
+    networks:
+      # The FreeRADIUS service is connected to the 'freeradius-network'.
+      - freeradius-network
+
+networks:
+  freeradius-network:
+    # A custom bridge network named 'freeradius-network' is created.
+    driver: bridge

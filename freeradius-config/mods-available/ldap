@@ -1,0 +1,56 @@
+#
+# /etc/freeradius/3.0/mods-available/ldap
+#
+ldap {
+    # Endereço e porta do servidor LDAP usando LDAPS
+    server = "${LDAP_SERVER}"
+    port = ${LDAP_PORT}
+
+    # DN para bind – ajuste conforme seu ambiente
+    # se não for definida a variavel, uso ela como vazia
+    identity = "${LDAP_IDENTITY}"
+
+
+    # Senha para o bind
+    # se não for definida a variavel, uso ela como vazia
+    password = "${LDAP_PASSWORD}"
+
+    # Base DN para buscas no LDAP
+    basedn = "${LDAP_BASEDN}"
+
+    # Filtro para localizar o usuário; ajuste se necessário (ex.: para usar sAMAccountName em AD)
+    filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
+    base_filter = "(objectclass=*)"
+
+    # LDAPS já oferece canal seguro; não é necessário iniciar TLS
+    start_tls = no
+
+    tls {
+        # Caminho para a CA (ajuste se necessário)
+        ca_file = "/etc/ssl/certs/ca-certificates.crt"
+        check_crl = no
+    }
+
+    # Parâmetros de timeout e rede
+    timeout = 4
+    timelimit = 3
+    net_timeout = 1
+
+    # Seção de consulta do usuário
+    user {
+        # Se desejar especificar o base_dn para o usuário, pode usar "${..basedn}"
+        base_dn = "${..basedn}"
+        filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
+        password_attribute = userPassword
+    }
+
+    # Seção de consulta de grupos (opcional)
+    group {
+        base_dn = "${..basedn}"
+        filter = "(|(uniqueMember=%{Ldap-UserDN})(member=%{Ldap-UserDN})(memberUid=%{User-Name}))"
+        member_attribute = uniqueMember
+        groupname_attribute = cn
+    }
+
+    # Outras seções (client, profile, options) podem permanecer com os valores padrão
+}
