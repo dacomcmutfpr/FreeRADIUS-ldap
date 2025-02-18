@@ -48,6 +48,8 @@ Os arquivos de configuração do FreeRADIUS estão localizados no diretório `fr
 - `sites-enabled/default`: Configura o site padrão do FreeRADIUS para usar LDAP na autenticação.
 - `radiusd.conf`: Configuração principal do FreeRADIUS.
 
+
+
 ### Entrypoint Script
 
 O script `entrypoint.sh` é usado para substituir as variáveis de ambiente no arquivo de configuração LDAP e iniciar o FreeRADIUS.
@@ -59,7 +61,7 @@ O FreeRADIUS expõe as portas padrão para autenticação e contabilização:
 - `1812/udp`: Porta de autenticação RADIUS.
 - `1813/udp`: Porta de contabilização RADIUS.
 
-## Construção e Execução
+## Build e Execução
 
 Para construir a imagem Docker e iniciar o serviço FreeRADIUS, execute os seguintes comandos:
 
@@ -68,6 +70,11 @@ docker compose build
 docker compose up -d
 ```
 
+### Clients.conf
+
+Para adicionar um cliente, altere o arquivo `freeradius-config/clients.conf` e reinicie o container com `docker restart freeradius-ldap`.
+
+## Logs
 Para visualizar os logs do FreeRADIUS, use:
 
 ```sh
@@ -156,7 +163,11 @@ To build the Docker image and start the FreeRADIUS service, run the following co
 docker compose build
 docker compose up -d
 ```
+### Clients.conf
 
+To add a client, modify the `freeradius-config/clients.conf` file and restart the container with `docker restart freeradius-ldap`.
+
+## Logs
 To view the FreeRADIUS logs, use:
 
 ```sh
