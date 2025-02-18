@@ -3,6 +3,7 @@
 
 services:
   freeradius:
+    image: freeradius-ldap:latest
     # The FreeRADIUS service is built from the current directory.
     build: .
     # The container is named 'freeradius-ldap'.
