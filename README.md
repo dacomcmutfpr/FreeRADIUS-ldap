@@ -10,7 +10,7 @@ Este projeto configura um servidor FreeRADIUS com suporte a autenticação via L
   - `clients.conf`: Configuração dos clientes que podem se conectar ao servidor RADIUS.
   - `mods-available/ldap`: Configuração do módulo LDAP.
   - `sites-enabled/default`: Configuração do site padrão do FreeRADIUS.
-- `entrypoint.sh`: Script de entrada para iniciar o FreeRADIUS com substituição de variáveis de ambiente.
+  - `entrypoint.sh`: Script de entrada para iniciar o FreeRADIUS com substituição de variáveis de ambiente.
 
 ## Configuração
 
@@ -36,7 +36,7 @@ docker-compose up -d
 
 Os arquivos de configuração do FreeRADIUS estão localizados no diretório `freeradius-config/`. Eles são copiados para o contêiner durante a construção da imagem Docker.
 
-- `clients.conf`: Define os clientes que podem se conectar ao servidor RADIUS.
+- `clients.conf`: Define os clientes que podem se conectar ao servidor RADIUS. Este arquivo é montado como um volume, permitindo alterações sem a necessidade de reconstruir a imagem Docker.
 - `mods-available/ldap`: Configura o módulo LDAP para autenticação.
 - `sites-enabled/default`: Configura o site padrão do FreeRADIUS para usar LDAP na autenticação.
 
@@ -91,7 +91,7 @@ This project sets up a FreeRADIUS server with LDAP authentication support, using
   - `clients.conf`: Configuration for clients that can connect to the RADIUS server.
   - `mods-available/ldap`: Configuration for the LDAP module.
   - `sites-enabled/default`: Configuration for the default FreeRADIUS site.
-- `entrypoint.sh`: Entrypoint script to start FreeRADIUS with environment variable substitution.
+  - `entrypoint.sh`: Entrypoint script to start FreeRADIUS with environment variable substitution.
 
 ## Configuration
 
@@ -117,7 +117,7 @@ docker-compose up -d
 
 The FreeRADIUS configuration files are located in the `freeradius-config/` directory. They are copied to the container during the Docker image build.
 
-- `clients.conf`: Defines the clients that can connect to the RADIUS server.
+- `clients.conf`: Defines the clients that can connect to the RADIUS server. This file is mounted as a volume, allowing changes without the need to rebuild the Docker image.
 - `mods-available/ldap`: Configures the LDAP module for authentication.
 - `sites-enabled/default`: Configures the default FreeRADIUS site to use LDAP for authentication.
 

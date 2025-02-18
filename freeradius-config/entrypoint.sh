@@ -11,4 +11,4 @@
 envsubst < /etc/freeradius/3.0/mods-available/ldap > /etc/freeradius/3.0/mods-enabled/ldap
 
 # Inicia o FreeRADIUS
-exec freeradius 
+exec freeradius

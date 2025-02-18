@@ -39,10 +39,10 @@ RUN apt update && \
 
 COPY freeradius-config/ /etc/freeradius/3.0/
 
-COPY entrypoint.sh /entrypoint.sh
+COPY freeradius-config/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Caso opte por copiar a configuração, ative o módulo LDAP criando o link simbólico
+# Caso não utilize o entrypoint.sh, ative o módulo LDAP criando o link simbólico
 #RUN ln -s /etc/freeradius/3.0/mods-available/ldap /etc/freeradius/3.0/mods-enabled/ldap
 
 # Expondo as portas padrão do RADIUS (UDP 1812 e 1813)

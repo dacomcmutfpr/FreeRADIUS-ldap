@@ -23,6 +23,9 @@ services:
     networks:
       # The FreeRADIUS service is connected to the 'freeradius-network'.
       - freeradius-network
+    #volume para o arquivo de configuração clients.conf, assim é possível adicionar clientes sem precisar recriar a imagem
+    volumes:
+      - ./freeradius-config/clients.conf:/etc/freeradius/3.0/clients.conf
 
 networks:
   freeradius-network:
