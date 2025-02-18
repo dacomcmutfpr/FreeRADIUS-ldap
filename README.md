@@ -10,8 +10,9 @@ Este projeto configura um servidor FreeRADIUS com suporte a autenticação via L
   - `clients.conf`: Configuração dos clientes que podem se conectar ao servidor RADIUS.
   - `mods-available/ldap`: Configuração do módulo LDAP.
   - `sites-enabled/default`: Configuração do site padrão do FreeRADIUS.
+  - `radiusd.conf`: Configuração principal do FreeRADIUS. Config alterada para redirecionar o log para o stdout, para facilitar a visualização dos logs no docker.
   - `entrypoint.sh`: Script de entrada para iniciar o FreeRADIUS com substituição de variáveis de ambiente.
-
+  
 ## Configuração
 
 ### Variáveis de Ambiente
@@ -26,10 +27,16 @@ As seguintes variáveis de ambiente devem ser definidas para configurar a integr
 
 ### Docker Compose
 
-O arquivo `docker-compose.yml` define o serviço FreeRADIUS com as variáveis de ambiente necessárias. Para iniciar o serviço, execute:
+O arquivo `docker-compose.yml` define o serviço FreeRADIUS com as variáveis de ambiente necessárias. 
 
+Para criar/construir a imagem:
 ```sh
-docker-compose up -d
+docker compose build
+```
+
+Para iniciar o serviço, execute:
+```sh
+docker compose up -d
 ```
 
 ### Configuração do FreeRADIUS
@@ -39,6 +46,7 @@ Os arquivos de configuração do FreeRADIUS estão localizados no diretório `fr
 - `clients.conf`: Define os clientes que podem se conectar ao servidor RADIUS. Este arquivo é montado como um volume, permitindo alterações sem a necessidade de reconstruir a imagem Docker.
 - `mods-available/ldap`: Configura o módulo LDAP para autenticação.
 - `sites-enabled/default`: Configura o site padrão do FreeRADIUS para usar LDAP na autenticação.
+- `radiusd.conf`: Configuração principal do FreeRADIUS.
 
 ### Entrypoint Script
 
@@ -56,18 +64,18 @@ O FreeRADIUS expõe as portas padrão para autenticação e contabilização:
 Para construir a imagem Docker e iniciar o serviço FreeRADIUS, execute os seguintes comandos:
 
 ```sh
-docker-compose build
-docker-compose up -d
+docker compose build
+docker compose up -d
 ```
 
 Para visualizar os logs do FreeRADIUS, use:
 
 ```sh
-docker-compose logs -f
+docker compose logs -f
 ```
-ou
-```sh
-docker exec freeradius-ldap tail -f /var/log/freeradius/radius.log
+Para remover o serviço e o container:
+```
+docker compose down
 ```
 
 ## Contribuição
@@ -91,8 +99,9 @@ This project sets up a FreeRADIUS server with LDAP authentication support, using
   - `clients.conf`: Configuration for clients that can connect to the RADIUS server.
   - `mods-available/ldap`: Configuration for the LDAP module.
   - `sites-enabled/default`: Configuration for the default FreeRADIUS site.
-  - `entrypoint.sh`: Entrypoint script to start FreeRADIUS with environment variable substitution.
-
+  - `radiusd.conf`: Main configuration for FreeRADIUS. Config altered to redirect log to stdout, to facilitate log viewing in docker.
+  - `entrypoint.sh`: Entry script to start FreeRADIUS with environment variable substitution.
+  
 ## Configuration
 
 ### Environment Variables
@@ -107,19 +116,26 @@ The following environment variables must be set to configure LDAP integration:
 
 ### Docker Compose
 
-The `docker-compose.yml` file defines the FreeRADIUS service with the necessary environment variables. To start the service, run:
+The `docker-compose.yml` file defines the FreeRADIUS service with the necessary environment variables.
 
+To build the image:
 ```sh
-docker-compose up -d
+docker compose build
+```
+
+To start the service, run:
+```sh
+docker compose up -d
 ```
 
 ### FreeRADIUS Configuration
 
 The FreeRADIUS configuration files are located in the `freeradius-config/` directory. They are copied to the container during the Docker image build.
 
-- `clients.conf`: Defines the clients that can connect to the RADIUS server. This file is mounted as a volume, allowing changes without the need to rebuild the Docker image.
+- `clients.conf`: Defines the clients that can connect to the RADIUS server. This file is mounted as a volume, allowing changes without rebuilding the Docker image.
 - `mods-available/ldap`: Configures the LDAP module for authentication.
 - `sites-enabled/default`: Configures the default FreeRADIUS site to use LDAP for authentication.
+- `radiusd.conf`: Main configuration for FreeRADIUS.
 
 ### Entrypoint Script
 
@@ -132,23 +148,23 @@ FreeRADIUS exposes the standard ports for authentication and accounting:
 - `1812/udp`: RADIUS authentication port.
 - `1813/udp`: RADIUS accounting port.
 
-## Build and Run
+## Building and Running
 
 To build the Docker image and start the FreeRADIUS service, run the following commands:
 
 ```sh
-docker-compose build
-docker-compose up -d
+docker compose build
+docker compose up -d
 ```
 
 To view the FreeRADIUS logs, use:
 
 ```sh
-docker-compose logs -f
+docker compose logs -f
 ```
-or
-```sh
-docker exec freeradius-ldap tail -f /var/log/freeradius/radius.log
+To remove the service and container:
+```
+docker compose down
 ```
 
 ## Contribution
@@ -157,4 +173,6 @@ Contributions are welcome! Feel free to open issues and pull requests.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more details.
+---
+

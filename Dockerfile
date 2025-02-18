@@ -37,9 +37,10 @@ RUN apt update && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY freeradius-config/ /etc/freeradius/3.0/
-
-COPY freeradius-config/entrypoint.sh /entrypoint.sh
+COPY freeradius-config/mods-available/ldap /etc/freeradius/3.0/mods-available/ldap
+COPY freeradius-config/sites-enabled/default /etc/freeradius/3.0/sites-enabled/default
+COPY freeradius-config/radiusd.conf /etc/freeradius/3.0/radiusd.conf
+COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Caso não utilize o entrypoint.sh, ative o módulo LDAP criando o link simbólico
